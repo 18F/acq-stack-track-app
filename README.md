@@ -5,4 +5,4 @@ a tool for requesting and tracking acquisitions >$3500
 * we're using "projects" feature for issue tracking
 * slack channel is #acq-tts-intake
 * team: Leah is product and design, Alan is dev, Steven is our boss
-* stand up is 9am/12pm daily
+* stand up is 8:45am/11:45am daily
