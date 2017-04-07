@@ -10,7 +10,7 @@ cache:
   - "$HOME/.cache/pip"
 script:
 - "./manage.py collectstatic --noinput -v 0"
-- behave
+- behave intake/features
 - codeclimate-test-reporter
 - bandit -r .
 before_deploy:
