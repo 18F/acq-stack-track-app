@@ -11,6 +11,7 @@ cache:
 script:
 - "./manage.py collectstatic --noinput -v 0"
 - behave intake/features
+- coverage run $(which behave) intake/features
 - codeclimate-test-reporter
 - bandit -r .
 before_deploy:
