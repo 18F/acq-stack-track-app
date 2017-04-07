@@ -1,0 +1,31 @@
+language: python
+python:
+- '3.5'
+addons:
+  postgresql: '9.4'
+install:
+- pip install -r requirements.txt
+cache:
+  directories:
+  - "$HOME/.cache/pip"
+script:
+- "./manage.py collectstatic --noinput -v 0"
+- behave
+- codeclimate-test-reporter
+- bandit -r .
+before_deploy:
+- export PATH=$HOME:$PATH
+- travis_retry curl -L -o $HOME/cf.tgz "https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.15.0"
+- tar xzvf $HOME/cf.tgz -C $HOME
+- cf install-plugin autopilot -f -r CF-Community
+deploy:
+- provider: script
+  script: "./bin/deploy staging"
+  skip_cleanup: true
+  on:
+    branch: develop
+env:
+  global:
+  - CF_USERNAME=f247a40a-0fa4-4482-a372-e2f6e3ce8e3e
+  - CF_PASSWORD:
+    - secure: "h4geUfGBPkWzITGoDU2EOGxqmh9tupm66xQtBELaIe6j/T//81HCOqA00nTs98xumbXE60wAjUEsryCx+ehmOQcJ+wq5nhdfMcVuftMwvvD/iL8dGHLlsGxXfszgp8RNGoplcZS4taQ9LTHu12JtHqBxdCIeatX2zoS4ItjqGOVOpaxqcmxO8Dl3wkeYiurO5TEjdoTMLCvgm5R3FS8VbAqQm2Rscou76jo6OrIZXeJliRmF30rDrwP92VBbIy6Bvq+gjPBEr8GTs0P55YvxXhjLF/cs4KJfPOLBj3MfGg1tIPM1DbgimXgEPADJfDaFypojsb9KqHxVq+ao+F8NaSxizp1iUA+Mtu5OEZcXsHDQlfLjpiaX4cT58D/Pt+q2YJLf1p0Y1P/nXWZ/rB39sMXCaq8v7re7S7V6gs0MDy6tVcKjsi2Yau7e4m+b3cxRfKe8hZSgDpwIyQEJ6QL/N/JBBCwPLvlYsQ7GJee6AffHYNKJg7B6RJS5lNLIKHuTwAKLwlPPKD+Fcbb+g+X9xcYW+5tiJZLa2qHnzdD0Xn9odTYJkkGtXB6MHV56DHyuYtXtk3vIWlhnfEfrfXJUfm49CYmeNxCopsgnIYf0D/GZ3Bi7znw0mSyKbqJRN5fOBN44jd5LNmCbTlj2+HApjZ5IQodj0Cpo4pc3AI2Ub8Q="
