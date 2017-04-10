@@ -30,7 +30,7 @@ SECRET_KEY = SECRET_KEY = os.environ.get('SECRET_KEY',
                                          crypto.get_random_string(60))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', default=True) != "False"
+DEBUG = os.environ.get('DEBUG', True) != "False"
 
 ALLOWED_HOSTS = ['*']
 
@@ -40,7 +40,6 @@ ALLOWED_HOSTS = ['*']
 TEST_RUNNER = 'django_behave.runner.DjangoBehaveTestSuiteRunner'
 
 INSTALLED_APPS = [
-    'behave_django',
     'intake.apps.IntakeConfig',
     'django.contrib.admin',
     'django.contrib.auth',
