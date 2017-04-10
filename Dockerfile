@@ -13,3 +13,8 @@ WORKDIR $workdir
 ADD requirements.txt $workdir/requirements.txt
 
 RUN pip install -r requirements.txt
+
+RUN curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh > /usr/local/bin/wait-for-it
+RUN chmod +x /usr/local/bin/wait-for-it
+
+CMD wait-for-it db:5432 && python manage.py runserver 0.0.0.0:8000
