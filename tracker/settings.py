@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 TEST_RUNNER = 'django_behave.runner.DjangoBehaveTestSuiteRunner'
 
 INSTALLED_APPS = [
+    'behave_django',
     'intake.apps.IntakeConfig',
     'django.contrib.admin',
     'django.contrib.auth',
