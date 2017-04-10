@@ -23,7 +23,7 @@ before_deploy:
   - travis_retry curl -L -o $HOME/cf.tgz "https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.15.0"
   - tar xzvf $HOME/cf.tgz -C $HOME
   - cf install-plugin autopilot -f -r CF-Community
-  - docker-compose run web collectstatic
+  - docker-compose run web python manage.py collectstatic
 
 deploy:
 - provider: script
