@@ -1,24 +1,28 @@
-language: python
-python:
-- '3.5'
-addons:
-  postgresql: '9.4'
-install:
-- pip install -r requirements.txt
-cache:
-  directories:
-  - "$HOME/.cache/pip"
+language: generic
+
+services:
+  - docker
+
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/1.12.0/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
 script:
-- "./manage.py collectstatic --noinput -v 0"
-- behave intake/features
-- coverage run $(which behave) intake/features
-- codeclimate-test-reporter
-- bandit -r .
+  - docker-compose build
+  - docker-compose run web ./bin/test
+  # - coverage run $(which behave) intake/features
+  # - codeclimate-test-reporter
+  # - bandit -r .
+
 before_deploy:
-- export PATH=$HOME:$PATH
-- travis_retry curl -L -o $HOME/cf.tgz "https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.15.0"
-- tar xzvf $HOME/cf.tgz -C $HOME
-- cf install-plugin autopilot -f -r CF-Community
+  - export PATH=$HOME:$PATH
+  - travis_retry curl -L -o $HOME/cf.tgz "https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.15.0"
+  - tar xzvf $HOME/cf.tgz -C $HOME
+  - cf install-plugin autopilot -f -r CF-Community
+  - docker-compose run web collectstatic
+
 deploy:
 - provider: script
   script: "./bin/deploy staging"

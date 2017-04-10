@@ -1,0 +1,9 @@
+#! /usr/bin/env bash
+
+set -e
+
+echo yes | python manage.py collectstatic
+python manage.py test
+python manage.py behave
+
+rm -rf staticfiles
