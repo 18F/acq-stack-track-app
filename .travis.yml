@@ -9,8 +9,10 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
 
+before_script:
+  - ./bin/ci/docker-prep
+
 script:
-  - docker-compose build
   - docker-compose run web ./bin/test
   # - coverage run $(which behave) intake/features
   # - codeclimate-test-reporter
