@@ -2,6 +2,7 @@
 
 set -e
 
+python manage.py migrate
 echo yes | python manage.py collectstatic
 python manage.py test
 python manage.py behave
