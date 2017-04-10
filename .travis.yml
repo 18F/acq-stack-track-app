@@ -1,0 +1,30 @@
+language: python
+python:
+- '3.5'
+addons:
+  postgresql: '9.4'
+install:
+- pip install -r requirements.txt
+cache:
+  directories:
+  - "$HOME/.cache/pip"
+script:
+- "./manage.py collectstatic --noinput -v 0"
+- behave intake/features
+- coverage run $(which behave) intake/features
+- codeclimate-test-reporter
+- bandit -r .
+before_deploy:
+- export PATH=$HOME:$PATH
+- travis_retry curl -L -o $HOME/cf.tgz "https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.15.0"
+- tar xzvf $HOME/cf.tgz -C $HOME
+- cf install-plugin autopilot -f -r CF-Community
+deploy:
+- provider: script
+  script: "./bin/deploy staging"
+  skip_cleanup: true
+  on:
+    branch: develop
+env:
+  global:
+  - CF_USERNAME=f247a40a-0fa4-4482-a372-e2f6e3ce8e3e
