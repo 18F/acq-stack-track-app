@@ -1,0 +1,8 @@
+applications:
+- name: tracker
+  instances: 1
+  memory: 512M
+  disk_quota: 1024M
+  stack: cflinuxfs2
+  env:
+    DEBUG: "False"

@@ -1,0 +1,27 @@
+#! /usr/bin/env bash
+
+set -e
+
+API="https://api.fr.cloud.gov"
+ORG="gsa-acq-proto"
+SPACE="intake"
+FLAVOR=$1
+
+if [ $# -ne 1 ]; then
+  echo "Usage: deploy <production|staging>"
+  exit
+fi
+
+if [ $FLAVOR = 'production' ]; then
+  NAME="tracker-production"
+  MANIFEST="manifest.yml"
+elif [ $FLAVOR = 'staging' ]; then
+  NAME="tracker-staging"
+  MANIFEST="manifest-staging.yml"
+else
+  echo "Unknown flavor: $FLAVOR"
+  exit
+fi
+
+cf login --a $API --u $CF_USERNAME --p $CF_PASSWORD --o $ORG -s $SPACE
+cf zero-downtime-push $NAME -f $MANIFEST
