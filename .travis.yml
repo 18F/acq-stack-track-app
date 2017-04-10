@@ -11,7 +11,6 @@ before_install:
 
 script:
   - docker-compose build
-  - docker-compose up -d
   - docker-compose run web ./bin/test
   # - coverage run $(which behave) intake/features
   # - codeclimate-test-reporter
