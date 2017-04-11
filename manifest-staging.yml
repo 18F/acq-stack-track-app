@@ -4,3 +4,5 @@ applications:
   memory: 512M
   disk_quota: 1024M
   stack: cflinuxfs2
+  services:
+  - tracker-staging-psql
