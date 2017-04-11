@@ -83,15 +83,12 @@ WSGI_APPLICATION = 'tracker.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
-# Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 DATABASES = {
     'default': dj_database_url.config(
-        default="postgres://localhost/tracker"
+        default="postgres://postgres@db:5432/postgres"
         )
 }
 
