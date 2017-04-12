@@ -9,12 +9,21 @@ Feature: Starting a request
     And I click 'Next'
     Then I should see text prompting me towards other options
 
-  Scenario: Client requests item that costs more than $3,500 per yer
+  Scenario: Client requests item that costs more than $3,500 per year
 
     Given a client
     When I visit the intake form page
     Then I should see a form asking if the requested item costs more than $3,500 per year
     When I select 'Yes'
+    And I click 'Next'
+    Then I should see a form asking if the purchase is for a training
+
+  Scenario: Client does not know if item costs more than $3,500 per year
+
+    Given a client
+    When I visit the intake form page
+    Then I should see a form asking if the requested item costs more than $3,500 per year
+    When I select 'I'm not sure'
     And I click 'Next'
     Then I should see a form asking if the purchase is for a training
 

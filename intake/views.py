@@ -7,12 +7,15 @@ def index(request):
 
 def mp_threshold_question(request):
     if request.method == "POST":
-        above_mp_threshold = bool(request.POST.get('above_mp_threshold', False))
+        mp_threshold = request.POST.get('above_mp_threshold', None)
 
-        if above_mp_threshold:
-            return redirect('/training')
-        else:
-            return redirect('/under_mp')
+        redirect_path = {
+            'true': '/training',
+            'false': '/under_mp',
+            'not_sure': '/training'
+        }.get(mp_threshold)
+
+        return redirect(redirect_path)
     else:
         return render(request, 'intake/mp_threshold.html', {})
 

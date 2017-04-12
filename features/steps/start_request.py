@@ -22,7 +22,7 @@ def step_impl(context):
 def step_impl(context):
     br = context.browser
     soup = BeautifulSoup(br.page_source, 'html.parser')
-    form = soup.find('form', id='training')
+    form = soup.find('form', id='training_form')
     assert form
     assert 'Is this for training?' in form.get_text()
 
@@ -35,6 +35,11 @@ def step_impl(context):
 def step_impl(context):
     br = context.browser
     br.find_element_by_id("mp_radio_yes").click()
+
+@when(u'I select \'I\'m not sure\'')
+def step_impl(context):
+    br = context.browser
+    br.find_element_by_id("mp_radio_not_sure").click()
 
 @when(u'I click \'Next\'')
 def step_impl(context):
