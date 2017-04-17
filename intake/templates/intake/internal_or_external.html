@@ -1,0 +1,20 @@
+<form id='internal_or_external_form' action='/internal_or_external' method='post'>
+  {% csrf_token %}
+
+  <p>Is this purchase primarily for TTS or an external partner?</p>
+
+  <input type="radio"
+         id='internal_or_external_tts'
+         name="internal_or_external"
+         value="tts">
+         TTS
+         <br />
+  <input type="radio"
+         id='internal_or_external_external'
+         name="internal_or_external"
+         value="external">
+         External
+         <br />
+  <br />
+  <input type="submit" id='submit' value="Next" />
+</form>

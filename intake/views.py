@@ -24,6 +24,22 @@ def below_mp_threshold_answer(request):
 
 def training_question(request):
     if request.method == 'POST':
-        pass
+        is_training = request.POST.get('training', None)
+
+        redirect_path = {
+            'true': '/no_training',
+            'false': '/internal_or_external'
+        }.get(is_training)
+
+        return redirect(redirect_path)
     else:
         return render(request, 'intake/training.html', {})
+
+def no_training_answer(request):
+    return render(request, 'intake/no_trainings.html', {})
+
+def internal_or_external(request):
+    if request.method == 'POST':
+        pass
+    else:
+        return render(request, 'intake/internal_or_external.html', {})

@@ -44,7 +44,7 @@ def step_impl(context):
 @when(u'I click \'Next\'')
 def step_impl(context):
     br = context.browser
-    br.find_element_by_id("mp_submit").click()
+    br.find_element_by_id("submit").click()
 
 @then(u'I should see text prompting me towards other options')
 def step_impl(context):
