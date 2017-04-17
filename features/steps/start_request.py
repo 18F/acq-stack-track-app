@@ -52,3 +52,20 @@ def step_impl(context):
     text = "Sorry, this form is only for purchases greater than $3500 per year."
     sorry = br.find_element_by_id('sorry')
     assert text in sorry.text
+
+@when(u'I visit the training form page')
+def step_impl(context):
+    br = context.browser
+    br.get(context.base_url + '/training')
+
+@then(u'I should see text informing me that this form is not for training purposes')
+def step_impl(context):
+    br = context.browser
+    text = "Sorry, this form is not for training purchases."
+    assert text in br.page_source
+
+@then(u'I should see a form asking me if the request is for TTS or external')
+def step_impl(context):
+    br = context.browser
+    text = "Is this purchase primarily for TTS or an external partner?"
+    assert text in br.page_source

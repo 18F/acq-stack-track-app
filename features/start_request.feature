@@ -27,6 +27,22 @@ Feature: Starting a request
     And I click 'Next'
     Then I should see a form asking if the purchase is for a training
 
+  Scenario: Client requests a training
+
+    Given a client
+    When I visit the training form page
+    And I select 'Yes'
+    And I click 'Next'
+    Then I should see text informing me that this form is not for training purposes
+
+  Scenario: Client requests something other than training
+
+    Given a client
+    When I visit the training form page
+    And I select 'No'
+    And I click 'Next'
+    Then I should see a form asking me if the request is for TTS or external
+
 # Does this cost more than $3500 per year?
 # Yes
 # [display next question]
