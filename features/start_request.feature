@@ -106,13 +106,21 @@ Feature: Starting a request
     When I visit the contact form page
     And I enter an email address
     And I click 'Next'
-    Then I should see a form asking how urgent the request is
+    Then I should see a form asking if the request is urgent
 
   Scenario: Client has urgent request
 
     Given a client
     When I visit the urgency form page
     And I select 'Yes'
+    And I click 'Next'
+    Then I should see a form asking how urgent the request is
+
+  Scenario: Client describes the urgency of their request
+
+    Given a client
+    When I visit the urgency description form page
+    And I fill in the urgency description textbox
     And I click 'Next'
     Then I should see a form asking me for a description of the request
 
@@ -124,9 +132,10 @@ Feature: Starting a request
     And I click 'Next'
     Then I should see a form asking me for a description of the request
 
-# Is this urgent?
-# No
-# Yes
-# Can you provide a brief description of how urgent?
-# What is it? Can you provide a brief description of what you need to purchase?
-# [open text field]
+  Scenario: Client describes the request
+
+    Given a client
+    When I visit the description form page
+    And I fill in the description text box
+    And I click 'Next'
+    Then I see a form prompting me to submit my request

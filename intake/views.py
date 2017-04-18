@@ -78,6 +78,28 @@ def no_approval(request):
 
 def urgency(request):
     if request.method == 'POST':
-        return redirect('/description')
+        is_urgent = request.POST.get('urgency', None)
+
+        redirect_path = {
+            'true': '/urgency_description',
+            'false': '/description'
+        }.get(is_urgent)
+
+        return redirect(redirect_path)
     else:
         return render(request, 'intake/urgency.html', {})
+
+def urgency_description(request):
+    if request.method == 'POST':
+        return redirect('/description')
+    else:
+        return render(request, 'intake/urgency_description.html', {})
+
+def description(request):
+    if request.method == 'POST':
+        return redirect('/submit_request')
+    else:
+        return render(request, 'intake/description.html', {})
+
+def submit_request(request):
+    return render(request, 'intake/submit_request.html', {})

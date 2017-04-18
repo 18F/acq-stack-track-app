@@ -6,7 +6,7 @@ def before_all(context):
     # For debugging purposes, you can use the Firefox driver instead.
 
     context.browser = webdriver.PhantomJS()
-    context.browser.implicitly_wait(1)
+    context.browser.implicitly_wait(0.1)
     context.server_url = 'http://localhost:8000'
     context.asserter = unittest.TestCase()
 

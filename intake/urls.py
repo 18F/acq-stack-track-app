@@ -12,5 +12,9 @@ urlpatterns = [
     url(r'^no_external', views.no_external, name='no_external'),
     url(r'^approval', views.approval, name='approval'),
     url(r'^no_approval', views.no_approval, name='no_approval'),
-    url(r'^contact', views.contact, name='contact')
+    url(r'^contact', views.contact, name='contact'),
+    url(r'^urgency_description', views.urgency_description, name='urgency_description'),
+    url(r'^urgency', views.urgency, name='urgency'),
+    url(r'^description', views.description, name='description'),
+    url(r'^submit_request', views.submit_request, name='submit_request')
 ]

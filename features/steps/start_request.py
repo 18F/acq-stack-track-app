@@ -124,10 +124,10 @@ def step_impl(context):
     br = context.browser
     br.find_element_by_id('contact').send_keys("someemail@somewhere.com")
 
-@then(u'I should see a form asking how urgent the request is')
+@then(u'I should see a form asking if the request is urgent')
 def step_impl(context):
     br = context.browser
-    text = "we ask that you get this approval before starting a request with us"
+    text = "Is this urgent?"
     context.asserter.assertIn(text, br.page_source)
 
 @when(u'I visit the urgency form page')
@@ -135,8 +135,47 @@ def step_impl(context):
     br = context.browser
     br.get(context.base_url + '/urgency')
 
+@then(u'I should see a form asking how urgent the request is')
+def step_impl(context):
+    br = context.browser
+    text = "How urgent is the request?"
+    context.asserter.assertIn(text, br.page_source)
+
+@when(u'I visit the urgency description form page')
+def step_impl(context):
+    br = context.browser
+    br.get(context.base_url + '/urgency_description')
+
 @then(u'I should see a form asking me for a description of the request')
 def step_impl(context):
     br = context.browser
-    text = ""
+    text = "Can you provide a brief description of what you need to purchase?"
+    context.asserter.assertIn(text, br.page_source)
+
+@when(u'I fill in the urgency description textbox')
+def step_impl(context):
+    br = context.browser
+    description = """
+    This is very urgent! Drop everything!
+    """
+    br.find_element_by_id('urgency_description').send_keys(description)
+
+@when(u'I fill in the description text box')
+def step_impl(context):
+    br = context.browser
+    description = """
+    This is the description of the thing I want. It's got the cloud in it.
+    And it's written in Go, but also lots of React.
+    """
+    br.find_element_by_id('description').send_keys(description)
+
+@when(u'I visit the description form page')
+def step_impl(context):
+    br = context.browser
+    br.get(context.base_url + '/description')
+
+@then(u'I see a form prompting me to submit my request')
+def step_impl(context):
+    br = context.browser
+    text = "Please review the information below and click submit if it's correct:"
     context.asserter.assertIn(text, br.page_source)
