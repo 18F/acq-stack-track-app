@@ -1,0 +1,21 @@
+<form id='approval_form' action='/approval' method='post'>
+  {% csrf_token %}
+
+  <p>Did you get approval to buy this from the person who will be signing the check?
+  <p>(In other words, the person who manages the budget that will pay for this, such as your manager or the project lead.)</p>
+
+  <input type="radio"
+         id='radio_yes'
+         name="approval"
+         value="true">
+         Yes
+         <br />
+  <input type="radio"
+         id='radio_no'
+         name="approval"
+         value="false">
+         No
+         <br />
+  <br />
+  <input type="submit" id='submit' value="Next" />
+</form>

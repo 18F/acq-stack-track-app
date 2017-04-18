@@ -8,5 +8,9 @@ urlpatterns = [
     url(r'^under_mp', views.below_mp_threshold_answer, name='below_mp_threshold_answer'),
     url(r'^training', views.training_question, name='training_question'),
     url(r'^no_training', views.no_training_answer, name='no_training_answer'),
-    url(r'^internal_or_external', views.internal_or_external, name='internal_or_external')
+    url(r'^internal_or_external', views.internal_or_external, name='internal_or_external'),
+    url(r'^no_external', views.no_external, name='no_external'),
+    url(r'^approval', views.approval, name='approval'),
+    url(r'^no_approval', views.no_approval, name='no_approval'),
+    url(r'^contact', views.contact, name='contact')
 ]

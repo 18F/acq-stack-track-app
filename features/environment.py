@@ -1,4 +1,5 @@
 from selenium import webdriver
+import unittest
 
 def before_all(context):
     # PhantomJS is used there (headless browser - meaning we can execute tests in a command-line environment, which is what we want for use with SemaphoreCI
@@ -7,6 +8,7 @@ def before_all(context):
     context.browser = webdriver.PhantomJS()
     context.browser.implicitly_wait(1)
     context.server_url = 'http://localhost:8000'
+    context.asserter = unittest.TestCase()
 
 def after_all(context):
     # Explicitly quits the browser, otherwise it won't once tests are done

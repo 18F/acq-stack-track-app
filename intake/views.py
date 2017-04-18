@@ -40,6 +40,38 @@ def no_training_answer(request):
 
 def internal_or_external(request):
     if request.method == 'POST':
-        pass
+        is_internal = request.POST.get('internal_or_external', None)
+
+        redirect_path = {
+            'tts': '/approval',
+            'external': '/no_external'
+        }.get(is_internal)
+
+        return redirect(redirect_path)
     else:
         return render(request, 'intake/internal_or_external.html', {})
+
+def no_external(request):
+    return render(request, 'intake/no_external.html', {})
+
+def approval(request):
+    if request.method == 'POST':
+        has_approval = request.POST.get('approval', None)
+
+        redirect_path = {
+            'true': '/contact',
+            'false': '/no_approval'
+        }.get(has_approval)
+
+        return redirect(redirect_path)
+    else:
+        return render(request, 'intake/approval.html', {})
+
+def contact(request):
+    if request.method == 'POST':
+        pass
+    else:
+        return render(request, 'intake/contact.html', {})
+
+def no_approval(request):
+    return render(request, 'intake/no_approval.html', {})
