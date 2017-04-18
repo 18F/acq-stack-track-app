@@ -113,3 +113,30 @@ def step_impl(context):
     br = context.browser
     text = "we ask that you get this approval before starting a request with us"
     context.asserter.assertIn(text, br.page_source)
+
+@when(u'I visit the contact form page')
+def step_impl(context):
+    br = context.browser
+    br.get(context.base_url + '/contact')
+
+@when(u'I enter an email address')
+def step_impl(context):
+    br = context.browser
+    br.find_element_by_id('contact').send_keys("someemail@somewhere.com")
+
+@then(u'I should see a form asking how urgent the request is')
+def step_impl(context):
+    br = context.browser
+    text = "we ask that you get this approval before starting a request with us"
+    context.asserter.assertIn(text, br.page_source)
+
+@when(u'I visit the urgency form page')
+def step_impl(context):
+    br = context.browser
+    br.get(context.base_url + '/urgency')
+
+@then(u'I should see a form asking me for a description of the request')
+def step_impl(context):
+    br = context.browser
+    text = ""
+    context.asserter.assertIn(text, br.page_source)

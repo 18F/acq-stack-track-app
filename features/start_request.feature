@@ -100,7 +100,29 @@ Feature: Starting a request
     And I click 'Next'
     Then I should see text informing me approval is needed before starting the request
 
+  Scenario: Client enters contact information
 
+    Given a client
+    When I visit the contact form page
+    And I enter an email address
+    And I click 'Next'
+    Then I should see a form asking how urgent the request is
+
+  Scenario: Client has urgent request
+
+    Given a client
+    When I visit the urgency form page
+    And I select 'Yes'
+    And I click 'Next'
+    Then I should see a form asking me for a description of the request
+
+  Scenario: Client does not have urgent request
+
+    Given a client
+    When I visit the urgency form page
+    And I select 'No'
+    And I click 'Next'
+    Then I should see a form asking me for a description of the request
 
 # Is this urgent?
 # No

@@ -69,9 +69,15 @@ def approval(request):
 
 def contact(request):
     if request.method == 'POST':
-        pass
+        return redirect('/urgency')
     else:
         return render(request, 'intake/contact.html', {})
 
 def no_approval(request):
     return render(request, 'intake/no_approval.html', {})
+
+def urgency(request):
+    if request.method == 'POST':
+        return redirect('/description')
+    else:
+        return render(request, 'intake/urgency.html', {})
