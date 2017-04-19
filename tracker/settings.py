@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import dj_database_url
 from django.utils import crypto
 
 # Make Cloud Foundry VCAP environment variables accessible
@@ -82,16 +83,13 @@ WSGI_APPLICATION = 'tracker.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
+# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
+DATABASE_URL = os.environ.get("DATABASE_URL")
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'HOST': 'db',
-        'PORT': 5432,
-    }
+    'default': dj_database_url.config(
+        default="postgres://postgres@db:5432/postgres"
+        )
 }
 
 
