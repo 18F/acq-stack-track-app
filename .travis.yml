@@ -27,7 +27,7 @@ before_deploy:
 
 deploy:
 - provider: script
-  script: "./bin/deploy staging"
+  script: "./bin/deploy tracker-staging"
   skip_cleanup: true
   on:
     branch: develop

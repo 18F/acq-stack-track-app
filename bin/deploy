@@ -3,25 +3,24 @@
 set -e
 
 API="https://api.fr.cloud.gov"
-ORG="gsa-acq-proto"
-SPACE="intake"
-FLAVOR=$1
+ORG="gsa-contract-writing"
+SPACE=$1
 
 if [ $# -ne 1 ]; then
   echo "Usage: deploy <production|staging>"
   exit
 fi
 
-if [ $FLAVOR = 'production' ]; then
-  NAME="tracker-production"
+if [ $SPACE = 'tracker-prod' ]; then
+  NAME="tracker-prod"
   MANIFEST="manifest.yml"
-elif [ $FLAVOR = 'staging' ]; then
+elif [ $SPACE = 'tracker-staging' ]; then
   NAME="tracker-staging"
   MANIFEST="manifest-staging.yml"
 else
-  echo "Unknown flavor: $FLAVOR"
+  echo "Unknown space: $SPACE"
   exit
 fi
 
-cf login --a $API --u $CF_USERNAME --p $CF_PASSWORD --o $ORG -s $SPACE
+cf login -a $API -u $CF_USERNAME -p $CF_PASSWORD -o $ORG -s $SPACE
 cf zero-downtime-push $NAME -f $MANIFEST
