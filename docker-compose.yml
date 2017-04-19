@@ -3,6 +3,7 @@ services:
   db:
     image: postgres
   web:
+    stdin_open: true
     build: .
     volumes:
       - .:/app
