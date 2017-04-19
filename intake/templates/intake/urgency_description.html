@@ -1,0 +1,12 @@
+<form id='urgency_description_form' action='/urgency_description' method='post'>
+  {% csrf_token %}
+
+  <p>How urgent is the request?</p>
+
+  <textarea rows="4" cols="50" type='text' id='urgency_description' name='urgency_description'>
+  </textarea>
+
+  <br />
+  <br />
+  <input type="submit" id='submit' value="Next" />
+</form>

@@ -1,0 +1,10 @@
+<form id='urgency' action='/urgency' method='post'>
+  {% csrf_token %}
+
+  <p>Is this urgent?</p>
+
+  <input type="radio" id='radio_yes' name="urgency" value="true"> Yes <br />
+  <input type="radio" id='radio_no' name="urgency" value="false"> No <br />
+  <br />
+  <input type="submit" id='submit' value="Next" />
+</form>

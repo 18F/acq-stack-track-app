@@ -1,0 +1,13 @@
+<form id='contact_form' action='/contact' method='post'>
+  {% csrf_token %}
+
+  <p>What is the best way to reach you?</p>
+
+  <p>(For example, please share your email address or slack handle.)</p>
+
+  <input type='text' id='contact' name='contact' />
+
+  <br />
+  <br />
+  <input type="submit" id='submit' value="Next" />
+</form>

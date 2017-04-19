@@ -1,0 +1,14 @@
+<form id='description_form' action='/description' method='post'>
+  {% csrf_token %}
+
+  <p>What is it?</p>
+
+  <p>Can you provide a brief description of what you need to purchase?</p>
+
+  <textarea rows="4" cols="50" type='text' id='description' name='description'>
+  </textarea>
+
+  <br />
+  <br />
+  <input type="submit" id='submit' value="Next" />
+</form>
