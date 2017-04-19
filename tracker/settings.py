@@ -48,7 +48,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'behave_django',
+    'uaa_client',
 ]
 
 MIDDLEWARE = [
@@ -60,6 +62,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'uaa_client.authentication.UaaBackend',
+)
 
 ROOT_URLCONF = 'tracker.urls'
 
@@ -110,6 +116,30 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+# cloud.gov UAA Provider
+# https://cg-django-uaa.readthedocs.io/
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+UAA_AUTH_URL = 'https://login.fr.cloud.gov/oauth/authorize'
+
+UAA_TOKEN_URL = 'https://uaa.fr.cloud.gov/oauth/token'
+
+uaa_service = env.get_service(name='tracker-uaa-creds')
+if uaa_service is not None:
+    UAA_CLIENT_ID = uaa_service.credentials['UAA_CLIENT_ID']
+
+    UAA_CLIENT_SECRET = uaa_service.credentials['UAA_CLIENT_SECRET']
+else:
+    UAA_CLIENT_ID = os.environ.get('UAA_CLIENT_ID', 'tracker-dev')
+
+    UAA_CLIENT_SECRET = os.environ.get('UAA_CLIENT_SECRET')
+
+LOGIN_URL = 'uaa_client:login'
+
+LOGIN_REDIRECT_URL = '/'
 
 
 # Internationalization
