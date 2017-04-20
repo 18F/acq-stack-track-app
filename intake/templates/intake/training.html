@@ -1,4 +1,4 @@
-<form id='training_form' action='/training' method='post'>
+<form id='training_form' action='/requests/{{ request_id }}/training' method='post'>
   {% csrf_token %}
 
   <p>Is this for training?</p>

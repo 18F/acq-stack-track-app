@@ -1,4 +1,4 @@
-<form id='approval_form' action='/approval' method='post'>
+<form id='approval_form' action='/requests/{{ request_id }}/approval' method='post'>
   {% csrf_token %}
 
   <p>Did you get approval to buy this from the person who will be signing the check?

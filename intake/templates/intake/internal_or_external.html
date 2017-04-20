@@ -1,4 +1,4 @@
-<form id='internal_or_external_form' action='/internal_or_external' method='post'>
+<form id='internal_or_external_form' action='/requests/{{ request_id }}/internal_or_external' method='post'>
   {% csrf_token %}
 
   <p>Is this purchase primarily for TTS or an external partner?</p>
