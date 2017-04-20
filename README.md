@@ -29,6 +29,11 @@ To spin up a local server:
 $ docker-compose up
 ```
 
+If using authentication, create a superuser:
+```
+docker-compose run web python manage.py createsuperuser --email example@whatever.gov --username example --noinput
+```
+
 To run tests and feature specs:
 
 ```
