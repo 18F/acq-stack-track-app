@@ -2,7 +2,8 @@
 
 set -e
 
-echo yes | python manage.py collectstatic
+export DEBUG=False
+python manage.py collectstatic --noinput
 python manage.py test
 python manage.py behave
 

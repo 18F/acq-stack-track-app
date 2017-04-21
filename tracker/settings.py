@@ -124,23 +124,24 @@ AUTH_PASSWORD_VALIDATORS = [
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+if DEBUG:
+    UAA_AUTH_URL = 'fake:'
+
+    UAA_TOKEN_URL = 'fake:'
+else:
+    UAA_AUTH_URL = 'https://login.fr.cloud.gov/oauth/authorize'
+
+    UAA_TOKEN_URL = 'https://uaa.fr.cloud.gov/oauth/token'
+
 uaa_service = env.get_service(name='tracker-uaa-creds')
 if uaa_service is not None:
     UAA_CLIENT_ID = uaa_service.credentials['UAA_CLIENT_ID']
 
     UAA_CLIENT_SECRET = uaa_service.credentials['UAA_CLIENT_SECRET']
-
-    UAA_AUTH_URL = 'https://login.fr.cloud.gov/oauth/authorize'
-
-    UAA_TOKEN_URL = 'https://uaa.fr.cloud.gov/oauth/token'
 else:
     UAA_CLIENT_ID = os.environ.get('UAA_CLIENT_ID', 'tracker-dev')
 
     UAA_CLIENT_SECRET = os.environ.get('UAA_CLIENT_SECRET', 'secret-string')
-
-    UAA_AUTH_URL = 'fake:'
-
-    UAA_TOKEN_URL = 'fake:'
 
 LOGIN_URL = 'uaa_client:login'
 
