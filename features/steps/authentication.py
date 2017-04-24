@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+import selenium
 
 @given('a logged-in user')
 def step_impl(context):
@@ -26,9 +27,10 @@ def step_impl(context):
 @then('I do not have the option to submit a request')
 def step_impl(context):
     br = context.browser
-    start = br.find_element_by_id('start-request')
-    text = 'Start a request'
-    assert text not in start.text
+    try:
+        start = br.find_element_by_id('start-request')
+    except selenium.common.exceptions.NoSuchElementException:
+        assert True
 
 @then('I am redirected to the login page')
 def step_impl(context):
