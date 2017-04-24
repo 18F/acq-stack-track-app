@@ -7,11 +7,6 @@ def step_impl(context):
     user.save()
     context.test.client.force_login(user)
 
-# @when('I visit the root url')
-# def step_impl(context):
-#     br = context.browser
-#     br.open(context.browser_url('/'))
-
 @then('I should have the option to submit a request')
 def step_impl(context):
     br = context.browser
@@ -21,16 +16,22 @@ def step_impl(context):
 
 @given('an unauthenticated user')
 def step_impl(context):
+    # TODO: should this affirmatively set AnonymousUser?
     pass
 
 @when('I visit a request page')
 def step_impl(context):
-    pass
+    br = context.browser
+    br.get(context.base_url + '/start')
 
 @then('I do not have the option to submit a request')
 def step_impl(context):
-    pass
+    br = context.browser
+    start = br.find_element_by_id('start-request')
+    text = 'Start a request'
+    assert text not in start.text
 
 @then('I am redirected to the login page')
 def step_impl(context):
-    pass
+    expected_url = context.base_url + "/auth/login"
+    assert context.browser.current_url == expected_url
