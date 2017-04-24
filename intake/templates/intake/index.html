@@ -1,1 +1,9 @@
+{% if request.user %}
+<p>Hi, {{ request.user }}</p>
+{% else %}
+<a href="{% url 'uaa_client:login' %}">Log in</a>
+{% endif %}
+
 <p>{{ message }}</p>
+
+<a href="/start">Make a request</a>
