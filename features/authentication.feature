@@ -6,13 +6,14 @@ Feature: Authentication
     When I visit the root url
     Then I should have the option to submit a request
 
-  Scenario Outline: Unauthenticated user
+  Scenario Outline: Unauthenticated user submits request
 
     Given an unauthenticated user
-    When I visit <page>
-    Then I <result>
+    When I visit a request page
+    Then I am redirected to the login page
 
-    Examples:
-      | page | result |
-      | the root url | do not have the option to submit a request |
-      | a request page | am redirected to the login page |
+  Scenario Outline: Unauthenticated user visits site
+
+    Given an unauthenticated user
+    When I visit the root url
+    Then I do not have the option to submit a request
