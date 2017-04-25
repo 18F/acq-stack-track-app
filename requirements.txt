@@ -1,14 +1,16 @@
 appdirs==1.4.3
+appnope==0.1.0
 bandit==1.4.0
 beautifulsoup4==4.5.3
 behave==1.2.5
 behave-django==0.5.0
 bs4==0.0.1
 cfenv==0.5.2
+cg-django-uaa==1.0.1
 codeclimate-test-reporter==0.2.1
 coverage==4.3.4
-dj-database-url==0.4.2
 decorator==4.0.11
+dj-database-url==0.4.2
 Django==1.11
 django-behave==0.1.5
 django-formtools==2.0
@@ -32,6 +34,7 @@ psycopg2==2.7.1
 ptyprocess==0.5.1
 py==1.4.33
 Pygments==2.2.0
+PyJWT==1.5.0
 pyparsing==2.2.0
 pytest==3.0.7
 pytz==2017.2
