@@ -12,7 +12,7 @@ def step_impl(context):
 def step_impl(context):
     br = context.browser
     start = br.find_element_by_id('start-request')
-    text = 'Start a request'
+    text = 'Make a request'
     assert text in start.text
 
 @given('an unauthenticated user')

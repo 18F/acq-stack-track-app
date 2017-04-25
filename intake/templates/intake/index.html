@@ -6,4 +6,6 @@
 
 <p>{{ message }}</p>
 
-<a href="/start">Make a request</a>
+{% if request.user %}
+<p id="start-request"><a href="/start">Make a request</a></p>
+{% endif %}
