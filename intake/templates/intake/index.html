@@ -1,11 +1,11 @@
-{% if request.user %}
-<p>Hi, {{ request.user }}</p>
+{% if user.id %}
+<p>Hi, {{ user }}</p>
 {% else %}
 <a href="{% url 'uaa_client:login' %}">Log in</a>
 {% endif %}
 
 <p>{{ message }}</p>
 
-{% if request.user %}
+{% if user.id %}
 <p id="start-request"><a href="/start">Make a request</a></p>
 {% endif %}

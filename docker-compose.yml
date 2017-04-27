@@ -4,6 +4,7 @@ services:
     image: postgres
   web:
     stdin_open: true
+    tty: true
     build: .
     volumes:
       - .:/app
