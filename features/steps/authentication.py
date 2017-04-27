@@ -1,12 +1,43 @@
 from bs4 import BeautifulSoup
+# from seleniumlogin import force_login
 import selenium
 
 @given('a logged-in user')
 def step_impl(context):
     from django.contrib.auth.models import User
-    user = User(username='test', email='test@fake.gov')
+    user = User.objects.create(username='testuser', password='testpassword', email='fake@test.gov')
     user.save()
-    context.test.client.force_login(user)
+
+    # Log in by creating a cookie in the Django test client and then passing it
+    # over to the Selenium setup
+    driver = context.browser
+    base_url = context.base_url
+
+    from importlib import import_module
+    from django.contrib.auth import SESSION_KEY, BACKEND_SESSION_KEY, HASH_SESSION_KEY
+    from django.conf import settings
+    SessionStore = import_module(settings.SESSION_ENGINE).SessionStore
+    driver.get(context.base_url + '/')
+
+    session = SessionStore()
+    session[SESSION_KEY] = user.id
+    session[BACKEND_SESSION_KEY] = settings.AUTHENTICATION_BACKENDS[0]
+    session[HASH_SESSION_KEY] = user.get_session_auth_hash()
+    session.save()
+
+    domain = base_url.split(':')[-2].split('/')[-1]
+    cookie = {
+        'name': settings.SESSION_COOKIE_NAME,
+        'value': session.session_key,
+        'path': '/',
+        'domain': '.localhost',
+        'max-age': None,
+        'expires': None,
+        'secure': False,
+    }
+
+    driver.add_cookie(cookie)
+    driver.refresh()
 
 @then('I should have the option to submit a request')
 def step_impl(context):
