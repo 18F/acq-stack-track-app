@@ -53,7 +53,8 @@ def step_impl(context):
 
 @when('I visit a request page')
 def step_impl(context):
-    context.response = context.test.client.get(context.base_url + '/start')
+    br = context.browser
+    br.get(context.base_url + '/start')
 
 @then('I do not have the option to submit a request')
 def step_impl(context):
@@ -65,6 +66,6 @@ def step_impl(context):
 
 @then('I am redirected to the login page')
 def step_impl(context):
-    assert context.response.status_code == 301
-    expected_url = context.base_url + "/auth/login"
+    expected_url = context.base_url + "/auth/login?next=/start"
+    print(context.browser.current_url, expected_url)
     assert context.browser.current_url == expected_url
