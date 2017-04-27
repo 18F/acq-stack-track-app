@@ -66,6 +66,9 @@ def step_impl(context):
 
 @then('I am redirected to the login page')
 def step_impl(context):
-    expected_url = context.base_url + "/auth/login?next=/start"
-    print(context.browser.current_url, expected_url)
+    from django.conf import settings
+    if settings.DEBUG:
+        expected_url = context.base_url + "/auth/login?next=/start"
+    else:
+        expected_url = "https://login.fr.cloud.gov/login"
     assert context.browser.current_url == expected_url
