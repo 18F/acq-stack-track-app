@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3.6.1
 
 # install node, then phantomjs
 RUN apt-get update -qq && apt-get install -y build-essential nodejs npm nodejs-legacy
