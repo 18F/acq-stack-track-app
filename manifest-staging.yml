@@ -6,5 +6,6 @@ applications:
   stack: cflinuxfs2
   services:
   - tracker-staging-psql
+  - tracker-uaa-creds
   env:
     DEBUG: "False"
