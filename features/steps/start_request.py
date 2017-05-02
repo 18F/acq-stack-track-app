@@ -3,6 +3,11 @@ from intake.services import *
 from bs4 import BeautifulSoup
 import time
 
+def get_request(context):
+    request = context.request
+    print(request.pk)
+    return request
+
 @given(u'a client')
 def step_impl(context):
     pass
@@ -10,6 +15,13 @@ def step_impl(context):
 @given(u'a client and a request')
 def step_impl(context):
     context.request = CreateRequest().perform()
+
+@given(u'a request')
+def step_impl(context):
+    class MockRequest(object):
+        pk = 12
+    mock_request = MockRequest()
+    context.request = mock_request
 
 @when(u'I visit the start request page')
 def step_impl(context):
@@ -24,7 +36,7 @@ def step_impl(context):
 @when(u'I visit the intake form page')
 def step_impl(context):
     br = context.browser
-    request = context.request
+    request = get_request(context)
     br.get(context.base_url + '/requests/' + str(request.pk) + '/start')
 
 @then(u'I should see a form asking if the requested item costs more than $3,500 per year')
@@ -70,7 +82,7 @@ def step_impl(context):
 @when(u'I visit the training form page')
 def step_impl(context):
     br = context.browser
-    request = context.request
+    request = get_request(context)
     br.get(context.base_url + '/requests/' + str(request.pk) + '/training')
 
 @then(u'I should see text informing me that this form is not for training purposes')
@@ -88,7 +100,7 @@ def step_impl(context):
 @when(u'I visit the internal or external form page')
 def step_impl(context):
     br = context.browser
-    request = context.request
+    request = get_request(context)
     br.get(context.base_url + '/requests/' + str(request.pk) + '/internal_or_external')
 
 @when(u'I select \'External\'')
@@ -116,7 +128,7 @@ def step_impl(context):
 @when(u'I visit the approval form page')
 def step_impl(context):
     br = context.browser
-    request = context.request
+    request = get_request(context)
     br.get(context.base_url + '/requests/' + str(request.pk) + '/approval')
 
 @then(u'I should see a form asking the best way to reach me')
@@ -134,8 +146,14 @@ def step_impl(context):
 @when(u'I visit the contact form page')
 def step_impl(context):
     br = context.browser
-    request = context.request
-    br.get(context.base_url + '/requests/' + str(request.pk) + '/contact')
+    request = get_request(context)
+    url = context.base_url + '/requests/' + str(request.pk) + '/contact'
+    """
+    Dear Alan of tomorrow, here is what Alan of yesterday figured out:
+    you're getting these errors because in /requests/{{ request_id }}/contact',
+    request_id is null, so of course the URL isn't found.
+    """
+    br.get(url)
 
 @when(u'I enter an email address')
 def step_impl(context):
@@ -151,7 +169,7 @@ def step_impl(context):
 @when(u'I visit the urgency form page')
 def step_impl(context):
     br = context.browser
-    request = context.request
+    request = get_request(context)
     br.get(context.base_url + '/requests/' + str(request.pk) + '/urgency')
 
 @then(u'I should see a form asking how urgent the request is')
@@ -163,7 +181,7 @@ def step_impl(context):
 @when(u'I visit the urgency description form page')
 def step_impl(context):
     br = context.browser
-    request = context.request
+    request = get_request(context)
     br.get(context.base_url + '/requests/' + str(request.pk) + '/urgency_description')
 
 @then(u'I should see a form asking me for a description of the request')
@@ -192,7 +210,7 @@ def step_impl(context):
 @when(u'I visit the description form page')
 def step_impl(context):
     br = context.browser
-    request = context.request
+    request = get_request(context)
     br.get(context.base_url + '/requests/' + str(request.pk) + '/description')
 
 @then(u'I see a form prompting me to submit my request')

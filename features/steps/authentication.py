@@ -54,7 +54,7 @@ def step_impl(context):
 @when('I visit a request page')
 def step_impl(context):
     br = context.browser
-    br.get(context.base_url + '/start')
+    br.get(context.base_url + '/requests/new')
 
 @then('I do not have the option to submit a request')
 def step_impl(context):
