@@ -5,7 +5,7 @@ from IPython import embed
 from intake.services import *
 
 def index(request):
-    context = {'message': 'randy..............thank you'}
+    context = {}
     return render(request, 'intake/index.html', context)
 
 @login_required
