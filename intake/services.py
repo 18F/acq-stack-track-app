@@ -1,14 +1,7 @@
-class FakeRequest(object):
-    def __init__(self):
-        self.pk = 12
+from intake.models import Request
 
 class CreateRequest(object):
     def perform(self):
-        return FakeRequest()
-
-class FindRequest(object):
-    def __init__(self, pk):
-        self._pk = pk
-
-    def perform(self):
-        return FakeRequest()
+        request = Request()
+        request.save()
+        return request

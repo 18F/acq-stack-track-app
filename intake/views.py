@@ -38,7 +38,10 @@ def mp_threshold_question(request, request_id):
 
 @login_required
 def below_mp_threshold_answer(request, request_id):
-    return render(request, 'intake/under_mp_message.html', {})
+    context = {
+        'request_id': request_id
+    }
+    return render(request, 'intake/under_mp_message.html', context)
 
 @login_required
 def training_question(request, request_id):
@@ -52,7 +55,10 @@ def training_question(request, request_id):
 
         return redirect(redirect_path)
     else:
-        return render(request, 'intake/training.html', {})
+        context = {
+            'request_id': request_id
+        }
+        return render(request, 'intake/training.html', context)
 
 @login_required
 def no_training_answer(request, request_id):
@@ -73,7 +79,10 @@ def internal_or_external(request, request_id):
 
         return redirect(redirect_path)
     else:
-        return render(request, 'intake/internal_or_external.html', {})
+        context = {
+            'request_id': request_id
+        }
+        return render(request, 'intake/internal_or_external.html', context)
 
 @login_required
 def no_external(request, request_id):
@@ -104,7 +113,10 @@ def contact(request, request_id):
     if request.method == 'POST':
         return redirect('/requests/' + str(request_id) + '/urgency')
     else:
-        return render(request, 'intake/contact.html', {})
+        context = {
+            'request_id': request_id
+        }
+        return render(request, 'intake/contact.html', context)
 
 @login_required
 def no_approval(request, request_id):
@@ -145,7 +157,10 @@ def description(request, request_id):
     if request.method == 'POST':
         return redirect('/requests/' + str(request_id) + '/submit_request')
     else:
-        return render(request, 'intake/description.html', {})
+        context = {
+            'request_id': request_id
+        }
+        return render(request, 'intake/description.html', context)
 
 @login_required
 def submit_request(request, request_id):

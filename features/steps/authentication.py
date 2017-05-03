@@ -2,6 +2,11 @@ from bs4 import BeautifulSoup
 # from seleniumlogin import force_login
 import selenium
 
+@when(u'I visit the root url')
+def step_impl(context):
+    br = context.browser
+    br.get(context.base_url)
+
 @given('a logged-in user')
 def step_impl(context):
     from django.contrib.auth.models import User
