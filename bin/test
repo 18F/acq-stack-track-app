@@ -3,8 +3,8 @@
 set -e
 
 export DEBUG=False
-python manage.py collectstatic --noinput
+# python manage.py collectstatic --noinput
 python manage.py test
-python manage.py behave
+# python manage.py behave
 
 rm -rf staticfiles
