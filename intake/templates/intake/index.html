@@ -2,10 +2,10 @@
 
 {% block content %}
 
-<p>{{ message }}</p>
-
 {% if user.id %}
 <p id="start-request"><a href="/start">Make a request</a></p>
+{% else %}
+<p><a href="{% url 'uaa_client:login' %}">Log in to start making a request</a></p>
 {% endif %}
 
 {% endblock %}
