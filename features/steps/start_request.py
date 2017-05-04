@@ -5,7 +5,6 @@ import time
 
 def get_request(context):
     request = context.request
-    print(request.pk)
     return request
 
 @given(u'a client')
@@ -18,10 +17,7 @@ def step_impl(context):
 
 @given(u'a request')
 def step_impl(context):
-    class MockRequest(object):
-        pk = 12
-    mock_request = MockRequest()
-    context.request = mock_request
+    context.request = CreateRequest().perform()
 
 @when(u'I visit the start request page')
 def step_impl(context):

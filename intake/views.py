@@ -23,17 +23,13 @@ def mp_threshold_question(request, request_id):
     if request.method == "POST":
         mp_threshold = request.POST.get('below_mp_threshold', None)
 
-        print('here is the POST data:')
-        print(request.POST)
-        print('-----------------------')
-
         update_request = UpdateRequest(request_id, request.POST)
         update_request.perform()
 
         redirect_path = {
             'false': '/requests/' + str(request_id) + '/training',
             'true': '/requests/' + str(request_id) + '/under_mp',
-            'not_sure': '/requests/' + str(request_id) + '/training',
+            'none': '/requests/' + str(request_id) + '/training',
         }.get(mp_threshold)
 
         return redirect(redirect_path)

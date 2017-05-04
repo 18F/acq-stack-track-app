@@ -9,7 +9,22 @@ class CreateRequest(object):
 class UpdateRequest(object):
     def __init__(self, request_id, attributes):
         self._request_id = request_id
-        self._attributes = attributes
+        self._attributes = {}
+
+        for param in self._permitted_params():
+            self._attributes[param] = attributes.get(param)
+
+        for key, value in self._attributes.items():
+            if value == 'true':
+                self._attributes[key] = True
+            if value == 'false':
+                self._attributes[key] = False
+            if value == 'none':
+                self._attributes[key] = None
 
     def perform(self):
-        return Request.objects.filter(pk=self._request_id).update(**self._attributes)
+        return Request.objects.filter(pk=self._request_id) \
+                              .update(**self._attributes)
+
+    def _permitted_params(self):
+        return ['below_mp_threshold']

@@ -63,15 +63,28 @@ class IntakeViewsTestCase(TestCase):
         self.assertEqual(request_model.below_mp_threshold, True)
         self.assertEqual(response.status_code, 302)
 
-        # # test above mp threshold
-        # request_model = Request()
-        # request_model.save()
-        # request_factory = RequestFactory()
-        # post_data = {
-        #     'below_mp_threshold': 'false'
-        # }
-        # request = request_factory.post('', post_data)
-        # response = views.mp_threshold_question(request, request_model.pk)
-        # request_model.refresh_from_db()
-        # self.assertEqual(request_model.below_mp_threshold, False)
-        # self.assertEqual(response.status_code, 302)
+        # test above mp threshold
+        request_model = Request()
+        request_model.save()
+        request_factory = RequestFactory()
+        post_data = {
+            'below_mp_threshold': 'false'
+        }
+        request = request_factory.post('', post_data)
+        response = views.mp_threshold_question(request, request_model.pk)
+        request_model.refresh_from_db()
+        self.assertEqual(request_model.below_mp_threshold, False)
+        self.assertEqual(response.status_code, 302)
+
+        # test "not sure" mp threshold
+        request_model = Request()
+        request_model.save()
+        request_factory = RequestFactory()
+        post_data = {
+            'below_mp_threshold': 'none'
+        }
+        request = request_factory.post('', post_data)
+        response = views.mp_threshold_question(request, request_model.pk)
+        request_model.refresh_from_db()
+        self.assertEqual(request_model.below_mp_threshold, None)
+        self.assertEqual(response.status_code, 302)
