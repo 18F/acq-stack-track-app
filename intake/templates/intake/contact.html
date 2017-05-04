@@ -1,3 +1,7 @@
+{% extends "intake/base.html" %}
+
+{% block content %}
+
 <form id='contact_form' action='/contact' method='post'>
   {% csrf_token %}
 
@@ -11,3 +15,5 @@
   <br />
   <input type="submit" id='submit' value="Next" />
 </form>
+
+{% endblock %}

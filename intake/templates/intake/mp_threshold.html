@@ -1,3 +1,7 @@
+{% extends "intake/base.html" %}
+
+{% block content %}
+
 <form id='mp_threshold' action='/start' method='post'>
   {% csrf_token %}
 
@@ -9,3 +13,5 @@
   <br />
   <input type="submit" id='submit' value="Next" />
 </form>
+
+{% endblock %}
