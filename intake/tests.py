@@ -1,7 +1,7 @@
 from django.test import TestCase, RequestFactory
 
 from intake.models import Request
-from intake.services import CreateRequest, UpdateRequest
+from intake.services import CreateRequest, UpdateRequest, UpdateRequestException
 
 # mock login_required before we import the views that have been decorated by it
 # more info: http://alexmarandon.com/articles/python_mock_gotchas/#patching-decorators
@@ -25,6 +25,12 @@ class UpdateRequestTestCase(TestCase):
         update_request.perform()
         request_model.refresh_from_db()
         self.assertEqual(request_model.below_mp_threshold, True)
+
+    def test_init_with_unpermitted_param(self):
+        request_model = Request()
+        request_model.save()
+        with self.assertRaises(UpdateRequestException):
+            update_request = UpdateRequest(request_model.pk, {'banned_param':True})
 
 class IntakeViewsTestCase(TestCase):
     def test_create_request(self):
@@ -87,4 +93,121 @@ class IntakeViewsTestCase(TestCase):
         response = views.mp_threshold_question(request, request_model.pk)
         request_model.refresh_from_db()
         self.assertEqual(request_model.below_mp_threshold, None)
+        self.assertEqual(response.status_code, 302)
+
+    def test_below_mp_threshold_answer(self):
+        request_factory = RequestFactory()
+        request = request_factory.get('')
+        response = views.below_mp_threshold_answer(request, 12)
+        self.assertEqual(response.status_code, 200)
+
+    def test_training_question_get_request(self):
+        request_factory = RequestFactory()
+        request = request_factory.get('')
+        response = views.training_question(request, 12)
+        self.assertEqual(response.status_code, 200)
+
+    def test_training_question_post_request(self):
+        # test is training
+        request_model = Request()
+        request_model.save()
+        request_factory = RequestFactory()
+        post_data = {
+            'is_training': 'true'
+        }
+        request = request_factory.post('', post_data)
+        response = views.training_question(request, request_model.pk)
+        request_model.refresh_from_db()
+        self.assertEqual(request_model.is_training, True)
+        self.assertEqual(response.status_code, 302)
+
+        # test is not training
+        request_model = Request()
+        request_model.save()
+        request_factory = RequestFactory()
+        post_data = {
+            'is_training': 'false'
+        }
+        request = request_factory.post('', post_data)
+        response = views.training_question(request, request_model.pk)
+        request_model.refresh_from_db()
+        self.assertEqual(request_model.is_training, False)
+        self.assertEqual(response.status_code, 302)
+
+    def test_no_training_answer(self):
+        request_factory = RequestFactory()
+        request = request_factory.get('')
+        response = views.no_training_answer(request, 12)
+        self.assertEqual(response.status_code, 200)
+
+    def test_internal_or_external_get_request(self):
+        request_factory = RequestFactory()
+        request = request_factory.get('')
+        response = views.internal_or_external(request, 12)
+        self.assertEqual(response.status_code, 200)
+
+    def test_internal_or_external_post_request(self):
+        # test is internal
+        request_model = Request()
+        request_model.save()
+        request_factory = RequestFactory()
+        post_data = {
+            'is_internal': 'true'
+        }
+        request = request_factory.post('', post_data)
+        response = views.internal_or_external(request, request_model.pk)
+        request_model.refresh_from_db()
+        self.assertEqual(request_model.is_internal, True)
+        self.assertEqual(response.status_code, 302)
+
+        # test is not internal
+        request_model = Request()
+        request_model.save()
+        request_factory = RequestFactory()
+        post_data = {
+            'is_internal': 'false'
+        }
+        request = request_factory.post('', post_data)
+        response = views.internal_or_external(request, request_model.pk)
+        request_model.refresh_from_db()
+        self.assertEqual(request_model.is_internal, False)
+        self.assertEqual(response.status_code, 302)
+
+    def test_no_external(self):
+        request_factory = RequestFactory()
+        request = request_factory.get('')
+        response = views.no_external(request, 12)
+        self.assertEqual(response.status_code, 200)
+
+    def test_approval_get_request(self):
+        request_factory = RequestFactory()
+        request = request_factory.get('')
+        response = views.approval(request, 12)
+        self.assertEqual(response.status_code, 200)
+
+    def test_approval_post_request(self):
+        # client lacks approval
+        request_model = Request()
+        request_model.save()
+        request_factory = RequestFactory()
+        post_data = {
+            'client_has_approval': 'false'
+        }
+        request = request_factory.post('', post_data)
+        response = views.approval(request, request_model.pk)
+        request_model.refresh_from_db()
+        self.assertEqual(request_model.client_has_approval, False)
+        self.assertEqual(response.status_code, 302)
+
+        # client has approval
+        request_model = Request()
+        request_model.save()
+        request_factory = RequestFactory()
+        post_data = {
+            'client_has_approval': 'true'
+        }
+        request = request_factory.post('', post_data)
+        response = views.approval(request, request_model.pk)
+        request_model.refresh_from_db()
+        self.assertEqual(request_model.client_has_approval, True)
         self.assertEqual(response.status_code, 302)

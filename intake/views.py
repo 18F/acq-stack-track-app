@@ -49,7 +49,10 @@ def below_mp_threshold_answer(request, request_id):
 @login_required
 def training_question(request, request_id):
     if request.method == 'POST':
-        is_training = request.POST.get('training', None)
+        is_training = request.POST.get('is_training', None)
+
+        update_request = UpdateRequest(request_id, request.POST)
+        update_request.perform()
 
         redirect_path = {
             'true': '/requests/' + str(request_id) + '/no_training',
@@ -73,11 +76,14 @@ def no_training_answer(request, request_id):
 @login_required
 def internal_or_external(request, request_id):
     if request.method == 'POST':
-        is_internal = request.POST.get('internal_or_external', None)
+        is_internal = request.POST.get('is_internal', None)
+
+        update_request = UpdateRequest(request_id, request.POST)
+        update_request.perform()
 
         redirect_path = {
-            'tts': '/requests/' + str(request_id) + '/approval',
-            'external': '/requests/' + str(request_id) + '/no_external'
+            'true': '/requests/' + str(request_id) + '/approval',
+            'false': '/requests/' + str(request_id) + '/no_external'
         }.get(is_internal)
 
         return redirect(redirect_path)
@@ -97,7 +103,10 @@ def no_external(request, request_id):
 @login_required
 def approval(request, request_id):
     if request.method == 'POST':
-        has_approval = request.POST.get('approval', None)
+        has_approval = request.POST.get('client_has_approval', None)
+
+        update_request = UpdateRequest(request_id, request.POST)
+        update_request.perform()
 
         redirect_path = {
             'true': '/requests/' + str(request_id) + '/contact',

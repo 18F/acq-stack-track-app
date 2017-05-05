@@ -11,6 +11,10 @@ class UpdateRequest(object):
         self._request_id = request_id
         self._attributes = {}
 
+        for key, _ in attributes.items():
+            if key not in self._permitted_params():
+                raise UpdateRequestException("Attribute {} not permitted.".format(key))
+
         for param in self._permitted_params():
             self._attributes[param] = attributes.get(param)
 
@@ -27,4 +31,12 @@ class UpdateRequest(object):
                               .update(**self._attributes)
 
     def _permitted_params(self):
-        return ['below_mp_threshold']
+        return [
+            'below_mp_threshold',
+            'is_training',
+            'is_internal',
+            'client_has_approval'
+        ]
+
+class UpdateRequestException(Exception):
+    pass
