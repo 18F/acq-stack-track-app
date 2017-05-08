@@ -9,6 +9,10 @@ from unittest.mock import Mock, patch
 patch('django.contrib.auth.decorators.login_required', lambda x: x).start()
 import intake.views as views
 
+from datetime import datetime
+
+from IPython import embed
+
 class CreateRequestTestCase(TestCase):
     def test_perform_with_no_args(self):
         create_request = CreateRequest()
@@ -211,3 +215,120 @@ class IntakeViewsTestCase(TestCase):
         request_model.refresh_from_db()
         self.assertEqual(request_model.client_has_approval, True)
         self.assertEqual(response.status_code, 302)
+
+    def test_contact_get_request(self):
+        request_factory = RequestFactory()
+        request = request_factory.get('')
+        response = views.contact(request, 12)
+        self.assertEqual(response.status_code, 200)
+
+    def test_contact_post_request(self):
+        request_model = Request()
+        request_model.save()
+        request_factory = RequestFactory()
+        post_data = {
+            'client_contact': '@adelevie on slack'
+        }
+        request = request_factory.post('', post_data)
+        response = views.contact(request, request_model.pk)
+        request_model.refresh_from_db()
+        self.assertEqual(request_model.client_contact, '@adelevie on slack')
+        self.assertEqual(response.status_code, 302)
+
+        # client leaves contact blank
+        request_model = Request()
+        request_model.save()
+        request_factory = RequestFactory()
+        post_data = {
+            'client_contact': ''
+        }
+        request = request_factory.post('', post_data)
+        response = views.contact(request, request_model.pk)
+        request_model.refresh_from_db()
+        self.assertEqual(request_model.client_contact, '')
+        self.assertEqual(response.status_code, 302)
+
+    def test_no_approval_get_request(self):
+        request_factory = RequestFactory()
+        request = request_factory.get('')
+        response = views.no_approval(request, 12)
+        self.assertEqual(response.status_code, 200)
+
+    def test_urgency_get_request(self):
+        request_factory = RequestFactory()
+        request = request_factory.get('')
+        response = views.urgency(request, 12)
+        self.assertEqual(response.status_code, 200)
+
+    def test_urgency_post_request(self):
+        request_factory = RequestFactory()
+        post_data = {
+            'urgency': 'true'
+        }
+        request = request_factory.post('', post_data)
+        response = views.urgency(request, 12)
+        self.assertEqual(response.status_code, 302)
+
+        request_factory = RequestFactory()
+        post_data = {
+            'urgency': 'false'
+        }
+        request = request_factory.post('', post_data)
+        response = views.urgency(request, 12)
+        self.assertEqual(response.status_code, 302)
+
+    def test_urgency_description_get_request(self):
+        request_factory = RequestFactory()
+        request = request_factory.get('')
+        response = views.urgency_description(request, 12)
+        self.assertEqual(response.status_code, 200)
+
+    def test_urgency_description_post_request(self):
+        request_model = Request()
+        request_model.save()
+        request_factory = RequestFactory()
+        post_data = {
+            'urgency': 'this is very urgent'
+        }
+        request = request_factory.post('', post_data)
+        response = views.urgency_description(request, request_model.pk)
+        request_model.refresh_from_db()
+        self.assertEqual(request_model.urgency, 'this is very urgent')
+        self.assertEqual(response.status_code, 302)
+
+    def test_description_get_request(self):
+        request_factory = RequestFactory()
+        request = request_factory.get('')
+        response = views.description(request, 12)
+        self.assertEqual(response.status_code, 200)
+
+    def test_description_post_request(self):
+        request_model = Request()
+        request_model.save()
+        request_factory = RequestFactory()
+        post_data = {
+            'description': 'I want to buy some widgets'
+        }
+        request = request_factory.post('', post_data)
+        response = views.description(request, request_model.pk)
+        request_model.refresh_from_db()
+        self.assertEqual(request_model.description, 'I want to buy some widgets')
+        self.assertEqual(response.status_code, 302)
+
+    def test_submit_request_get_request(self):
+        request_factory = RequestFactory()
+        request = request_factory.get('')
+        response = views.submit_request(request, 12)
+        self.assertEqual(response.status_code, 200)
+
+    def test_submit_request_post_request(self):
+        request_model = Request()
+        request_model.save()
+        request_factory = RequestFactory()
+        post_data = {
+            'submit': 'true'
+        }
+        request = request_factory.post('', post_data)
+        response = views.submit_request(request, request_model.pk)
+        request_model.refresh_from_db()
+        self.assertEqual(request_model.submitted_at.__class__, datetime)

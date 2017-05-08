@@ -35,7 +35,11 @@ class UpdateRequest(object):
             'below_mp_threshold',
             'is_training',
             'is_internal',
-            'client_has_approval'
+            'client_has_approval',
+            'client_contact',
+            'urgency',
+            'description',
+            'submitted_at'
         ]
 
 class UpdateRequestException(Exception):

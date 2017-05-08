@@ -4,6 +4,8 @@ from IPython import embed
 
 from intake.services import *
 
+import datetime
+
 def index(request):
     context = {}
     return render(request, 'intake/index.html', context)
@@ -123,6 +125,10 @@ def approval(request, request_id):
 @login_required
 def contact(request, request_id):
     if request.method == 'POST':
+
+        update_request = UpdateRequest(request_id, request.POST)
+        update_request.perform()
+
         return redirect('/requests/' + str(request_id) + '/urgency')
     else:
         context = {
@@ -157,6 +163,10 @@ def urgency(request, request_id):
 @login_required
 def urgency_description(request, request_id):
     if request.method == 'POST':
+
+        update_request = UpdateRequest(request_id, request.POST)
+        update_request.perform()
+
         return redirect('/requests/' + str(request_id) + '/description')
     else:
         context = {
@@ -167,6 +177,10 @@ def urgency_description(request, request_id):
 @login_required
 def description(request, request_id):
     if request.method == 'POST':
+
+        update_request = UpdateRequest(request_id, request.POST)
+        update_request.perform()
+
         return redirect('/requests/' + str(request_id) + '/submit_request')
     else:
         context = {
@@ -176,7 +190,15 @@ def description(request, request_id):
 
 @login_required
 def submit_request(request, request_id):
-    context = {
-        'request_id': request_id
-    }
-    return render(request, 'intake/submit_request.html', context)
+    if request.method == 'POST':
+        attributes = {
+            'submitted_at': datetime.datetime.now()
+        }
+        update_request = UpdateRequest(request_id, attributes)
+        update_request.perform()
+    else:
+        context = {
+            'request_id': request_id
+        }
+
+        return render(request, 'intake/submit_request.html', context)
