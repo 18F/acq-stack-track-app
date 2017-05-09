@@ -136,3 +136,11 @@ Feature: Starting a request
     And I fill in the description text box
     And I click 'Next'
     Then I see a form prompting me to submit my request
+
+  Scenario: Client submits request
+
+    Given a logged-in user
+    Given a request
+    When I visit the request submission page
+    And I click 'Submit'
+    Then I should see confirmation that my request was submitted

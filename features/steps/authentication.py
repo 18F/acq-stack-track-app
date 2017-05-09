@@ -10,7 +10,9 @@ def step_impl(context):
 @given('a logged-in user')
 def step_impl(context):
     from django.contrib.auth.models import User
-    user = User.objects.create(username='testuser', password='testpassword', email='fake@test.gov')
+    user = User.objects.create(username='testuser',
+                               password='testpassword',
+                               email='fake@test.gov')
     user.save()
 
     # Log in by creating a cookie in the Django test client and then passing it

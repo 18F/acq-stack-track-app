@@ -1,5 +1,7 @@
 from intake.models import Request
 
+from IPython import embed
+
 class CreateRequest(object):
     def perform(self):
         request = Request()
@@ -11,7 +13,12 @@ class UpdateRequest(object):
         self._request_id = request_id
         self._attributes = {}
 
-        for key, _ in attributes.items():
+        attributes_copy = attributes.copy()
+
+        if attributes_copy.get('csrfmiddlewaretoken'):
+            attributes_copy.pop('csrfmiddlewaretoken')
+
+        for key, _ in attributes_copy.items():
             if key not in self._permitted_params():
                 raise UpdateRequestException("Attribute {} not permitted.".format(key))
 

@@ -212,5 +212,22 @@ def step_impl(context):
 @then(u'I see a form prompting me to submit my request')
 def step_impl(context):
     br = context.browser
-    text = "Please review the information below and click submit if it's correct:"
+    text = "Click submit to send the request to TTS Office of Acquisitions"
+    context.asserter.assertIn(text, br.page_source)
+
+@when(u'I visit the request submission page')
+def step_impl(context):
+    br = context.browser
+    request = get_request(context)
+    br.get(context.base_url + '/requests/' + str(request.pk) + '/submit_request')
+
+@when(u'I click \'Submit\'')
+def step_impl(context):
+    br = context.browser
+    br.find_element_by_id("submit").click()
+
+@then(u'I should see confirmation that my request was submitted')
+def step_impl(context):
+    br = context.browser
+    text = "Thank you for submitting your request"
     context.asserter.assertIn(text, br.page_source)

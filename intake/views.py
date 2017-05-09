@@ -196,9 +196,19 @@ def submit_request(request, request_id):
         }
         update_request = UpdateRequest(request_id, attributes)
         update_request.perform()
+
+        return redirect('/requests/' + str(request_id) + '/submitted')
     else:
         context = {
             'request_id': request_id
         }
 
         return render(request, 'intake/submit_request.html', context)
+
+@login_required
+def request_submitted(request, request_id):
+        context = {
+            'request_id': request_id
+        }
+
+        return render(request, 'intake/request_submitted.html', context)
