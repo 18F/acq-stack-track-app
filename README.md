@@ -51,3 +51,7 @@ To run just feature specs:
 ```
 $ docker-compose run web python manage.py behave
 ```
+
+## Deployment
+
+This app runs on cloud.gov and is deployed via Travis CI. There are three env vars involved in the build: `CF_USERNAME`, `CF_PASSWORD`, and `CODECLIMATE_REPO_TOKEN`, all of which are stored via the Travis interface.
