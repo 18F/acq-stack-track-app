@@ -23,7 +23,8 @@ class UpdateRequest(object):
                 raise UpdateRequestException("Attribute {} not permitted.".format(key))
 
         for param in self._permitted_params():
-            self._attributes[param] = attributes.get(param)
+            if attributes.get(param) is not None:
+                self._attributes[param] = attributes.get(param)
 
         for key, value in self._attributes.items():
             if value == 'true':
