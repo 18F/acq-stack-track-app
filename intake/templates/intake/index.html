@@ -4,8 +4,6 @@
 <a href="{% url 'uaa_client:login' %}">Log in</a>
 {% endif %}
 
-<p>{{ message }}</p>
-
 {% if user.id %}
-<p id="start-request"><a href="/start">Make a request</a></p>
+<p id="start-request"><a href="/requests/new">Make a request</a></p>
 {% endif %}

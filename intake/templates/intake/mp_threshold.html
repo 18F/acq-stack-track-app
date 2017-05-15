@@ -1,11 +1,11 @@
-<form id='mp_threshold' action='/start' method='post'>
+<form id='mp_threshold' action='/requests/{{ request_id }}/start' method='post'>
   {% csrf_token %}
 
   <p>Does this cost more than $3500 per year?</p>
 
-  <input type="radio" id='radio_yes' name="above_mp_threshold" value="true"> Yes <br />
-  <input type="radio" id='radio_no' name="above_mp_threshold" value="false"> No <br />
-  <input type="radio" id='radio_not_sure' name="above_mp_threshold" value="not_sure"> I'm not sure <br />
+  <input type="radio" id='radio_yes' name="below_mp_threshold" value="false"> Yes <br />
+  <input type="radio" id='radio_no' name="below_mp_threshold" value="true"> No <br />
+  <input type="radio" id='radio_not_sure' name="below_mp_threshold" value="none"> I'm not sure <br />
   <br />
   <input type="submit" id='submit' value="Next" />
 </form>

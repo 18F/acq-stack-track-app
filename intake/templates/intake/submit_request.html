@@ -1,7 +1,9 @@
-<p>You're all done!</p>
+<form id='submit_request_form' action='/requests/{{ request_id }}/submit_request' method='post'>
+  {% csrf_token %}
 
-<p>Please review the information below and click submit if it's correct:</p>
+  <p>Click submit to send the request to TTS Office of Acquisitions</p>
 
-<p>[Placeholder]</p>
+  <input type="hidden" name="submit" value="true" />
 
-<input type='submit' />
+  <input type="submit" id='submit' value="Submit" />
+</form>

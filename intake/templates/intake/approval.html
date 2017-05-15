@@ -1,4 +1,4 @@
-<form id='approval_form' action='/approval' method='post'>
+<form id='approval_form' action='/requests/{{ request_id }}/approval' method='post'>
   {% csrf_token %}
 
   <p>Did you get approval to buy this from the person who will be signing the check?
@@ -6,13 +6,13 @@
 
   <input type="radio"
          id='radio_yes'
-         name="approval"
+         name="client_has_approval"
          value="true">
          Yes
          <br />
   <input type="radio"
          id='radio_no'
-         name="approval"
+         name="client_has_approval"
          value="false">
          No
          <br />
