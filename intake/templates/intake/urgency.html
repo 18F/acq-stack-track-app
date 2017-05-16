@@ -2,7 +2,8 @@
 
 {% block content %}
 
-<form id='urgency' action='/urgency' method='post'>
+<form id='urgency' action='/requests/{{ request_id }}/urgency' method='post'>
+
   {% csrf_token %}
 
   <p>Is this urgent?</p>

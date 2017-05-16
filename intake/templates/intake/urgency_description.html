@@ -2,12 +2,13 @@
 
 {% block content %}
 
-<form id='urgency_description_form' action='/urgency_description' method='post'>
+<form id='urgency_description_form' action='/requests/{{ request_id }}/urgency_description' method='post'>
+
   {% csrf_token %}
 
   <p>How urgent is the request?</p>
 
-  <textarea rows="4" cols="50" type='text' id='urgency_description' name='urgency_description'>
+  <textarea rows="4" cols="50" type='text' id='urgency_description' name='urgency'>
   </textarea>
 
   <br />

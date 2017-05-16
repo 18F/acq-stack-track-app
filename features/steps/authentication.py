@@ -2,10 +2,17 @@ from bs4 import BeautifulSoup
 # from seleniumlogin import force_login
 import selenium
 
+@when(u'I visit the root url')
+def step_impl(context):
+    br = context.browser
+    br.get(context.base_url)
+
 @given('a logged-in user')
 def step_impl(context):
     from django.contrib.auth.models import User
-    user = User.objects.create(username='testuser', password='testpassword', email='fake@test.gov')
+    user = User.objects.create(username='testuser',
+                               password='testpassword',
+                               email='fake@test.gov')
     user.save()
 
     # Log in by creating a cookie in the Django test client and then passing it
@@ -54,7 +61,7 @@ def step_impl(context):
 @when('I visit a request page')
 def step_impl(context):
     br = context.browser
-    br.get(context.base_url + '/start')
+    br.get(context.base_url + '/requests/new')
 
 @then('I do not have the option to submit a request')
 def step_impl(context):

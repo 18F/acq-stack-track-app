@@ -31,6 +31,3 @@ deploy:
   skip_cleanup: true
   on:
     branch: develop
-env:
-  global:
-  - CF_USERNAME=2a7ce1f9-e648-41e6-8777-4b48d817cf5f

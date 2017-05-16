@@ -2,13 +2,14 @@
 
 {% block content %}
 
-<form id='training_form' action='/training' method='post'>
+<form id='training_form' action='/requests/{{ request_id }}/training' method='post'>
+
   {% csrf_token %}
 
   <p>Is this for training?</p>
 
-  <input type="radio" id='radio_yes' name="training" value="true"> Yes <br />
-  <input type="radio" id='radio_no' name="training" value="false"> No <br />
+  <input type="radio" id='radio_yes' name="is_training" value="true"> Yes <br />
+  <input type="radio" id='radio_no' name="is_training" value="false"> No <br />
   <br />
   <input type="submit" id='submit' value="Next" />
 </form>

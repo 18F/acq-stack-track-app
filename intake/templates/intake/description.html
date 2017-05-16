@@ -2,7 +2,8 @@
 
 {% block content %}
 
-<form id='description_form' action='/description' method='post'>
+<form id='description_form' action='/requests/{{ request_id }}/description' method='post'>
+
   {% csrf_token %}
 
   <p>What is it?</p>
