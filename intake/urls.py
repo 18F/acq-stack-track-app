@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^logout$', views.logout_view, name='logout'),
     url(r'^requests/new', views.new_request, name='new_request'),
     url(r'^requests/create', views.create_request, name='create_request'),
     url(r'^requests/(?P<request_id>\d+)/start', views.mp_threshold_question, name='mp_threshold_question'),

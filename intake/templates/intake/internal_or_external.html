@@ -1,4 +1,9 @@
+{% extends "intake/base.html" %}
+
+{% block content %}
+
 <form id='internal_or_external_form' action='/requests/{{ request_id }}/internal_or_external' method='post'>
+
   {% csrf_token %}
 
   <p>Is this purchase primarily for TTS or an external partner?</p>
@@ -18,3 +23,5 @@
   <br />
   <input type="submit" id='submit' value="Next" />
 </form>
+
+{% endblock %}

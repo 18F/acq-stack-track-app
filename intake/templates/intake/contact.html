@@ -1,4 +1,9 @@
+{% extends "intake/base.html" %}
+
+{% block content %}
+
 <form id='contact_form' action='/requests/{{ request_id }}/contact' method='post'>
+
   {% csrf_token %}
 
   <p>What is the best way to reach you?</p>
@@ -11,3 +16,5 @@
   <br />
   <input type="submit" id='submit' value="Next" />
 </form>
+
+{% endblock %}

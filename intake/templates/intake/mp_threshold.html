@@ -1,4 +1,9 @@
+{% extends "intake/base.html" %}
+
+{% block content %}
+
 <form id='mp_threshold' action='/requests/{{ request_id }}/start' method='post'>
+
   {% csrf_token %}
 
   <p>Does this cost more than $3500 per year?</p>
@@ -9,3 +14,5 @@
   <br />
   <input type="submit" id='submit' value="Next" />
 </form>
+
+{% endblock %}

@@ -1,4 +1,9 @@
+{% extends "intake/base.html" %}
+
+{% block content %}
+
 <form id='urgency_description_form' action='/requests/{{ request_id }}/urgency_description' method='post'>
+
   {% csrf_token %}
 
   <p>How urgent is the request?</p>
@@ -10,3 +15,5 @@
   <br />
   <input type="submit" id='submit' value="Next" />
 </form>
+
+{% endblock %}

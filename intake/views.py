@@ -1,4 +1,5 @@
 from django.shortcuts import redirect, render
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from IPython import embed
 
@@ -212,3 +213,7 @@ def request_submitted(request, request_id):
         }
 
         return render(request, 'intake/request_submitted.html', context)
+
+def logout_view(request):
+    logout(request)
+    return redirect('/')

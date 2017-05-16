@@ -1,4 +1,9 @@
+{% extends "intake/base.html" %}
+
+{% block content %}
+
 <form id='training_form' action='/requests/{{ request_id }}/training' method='post'>
+
   {% csrf_token %}
 
   <p>Is this for training?</p>
@@ -8,3 +13,5 @@
   <br />
   <input type="submit" id='submit' value="Next" />
 </form>
+
+{% endblock %}

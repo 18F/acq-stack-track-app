@@ -1,4 +1,9 @@
+{% extends "intake/base.html" %}
+
+{% block content %}
+
 <form id='approval_form' action='/requests/{{ request_id }}/approval' method='post'>
+
   {% csrf_token %}
 
   <p>Did you get approval to buy this from the person who will be signing the check?
@@ -19,3 +24,5 @@
   <br />
   <input type="submit" id='submit' value="Next" />
 </form>
+
+{% endblock %}
