@@ -1,5 +1,11 @@
+{% extends "intake/base.html" %}
+
+{% block content %}
+
 <form id='new_request' action='/requests/create' method='post'>
   {% csrf_token %}
 
   <input type="submit" id='create_request' value="Create Request" />
 </form>
+
+{% endblock %}
