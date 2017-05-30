@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^logout$', views.logout_view, name='logout'),
     url(r'^requests/new', views.new_request, name='new_request'),
     url(r'^requests/create', views.create_request, name='create_request'),
+    url(r'^requests/all', views.big_board, name='big_board'),
     url(r'^requests/(?P<request_id>\d+)/start', views.mp_threshold_question, name='mp_threshold_question'),
     url(r'^requests/(?P<request_id>\d+)/under_mp', views.below_mp_threshold_answer, name='below_mp_threshold_answer'),
     url(r'^requests/(?P<request_id>\d+)/training', views.training_question, name='training_question'),

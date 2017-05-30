@@ -1,0 +1,12 @@
+{% extends "intake/base.html" %}
+
+{% block content %}
+
+<h1>All requests</h1>
+{% for r in requests %}
+<div>
+  {{ r.client_contact }} | {{ r.description }}
+</div>
+{% endfor %}
+
+{% endblock %}
