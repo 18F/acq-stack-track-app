@@ -3,6 +3,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from IPython import embed
 
+from intake.models import Request
 from intake.services import *
 
 import datetime
@@ -213,6 +214,15 @@ def request_submitted(request, request_id):
         }
 
         return render(request, 'intake/request_submitted.html', context)
+
+@login_required
+def big_board(request):
+    requests = Request.objects.all()
+    context = {
+        'requests': requests
+    }
+
+    return render(request, 'intake/big_board.html', context)
 
 def logout_view(request):
     logout(request)
