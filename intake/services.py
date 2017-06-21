@@ -3,8 +3,13 @@ from intake.models import Request
 from IPython import embed
 
 class CreateRequest(object):
+    def __init__(self, **kwargs):
+        self._user_id = kwargs.get('user_id')
+        if self._user_id is None:
+            raise Exception('user_id is missing')
+
     def perform(self):
-        request = Request()
+        request = Request(user_id=self._user_id)
         request.save()
         return request
 

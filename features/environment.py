@@ -1,5 +1,6 @@
 from selenium import webdriver
 import unittest
+import os
 
 def before_all(context):
     # PhantomJS is used there (headless browser - meaning we can execute tests in a command-line environment, which is what we want for use with SemaphoreCI

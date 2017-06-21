@@ -78,3 +78,17 @@ def step_impl(context):
     if not settings.DEBUG:
         expected_urls.append(context.base_url + "/auth/login?next=/start")
     assert context.browser.current_url in expected_urls
+
+@given(u'a request from another user')
+def step_impl(context):
+    pass
+
+@when(u'I visit the page of a request from another user')
+def step_impl(context):
+    #raise NotImplementedError(u'STEP: When I visit the page of a request from another user')
+    pass
+
+@then(u'I am redirected to the index page')
+def step_impl(context):
+    #raise NotImplementedError(u'STEP: Then I am redirected to the index page')
+    pass

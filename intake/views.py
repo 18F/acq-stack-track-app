@@ -18,7 +18,8 @@ def new_request(request):
 @login_required
 def create_request(request):
     if request.method == 'POST':
-        request = CreateRequest().perform()
+        user_id = request.user.id
+        request = CreateRequest(user_id=user_id).perform()
         return redirect('/requests/' + str(request.pk) + '/start')
 
 @login_required

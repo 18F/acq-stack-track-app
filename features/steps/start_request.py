@@ -13,11 +13,17 @@ def step_impl(context):
 
 @given(u'a client and a request')
 def step_impl(context):
-    context.request = CreateRequest().perform()
+    user = User()
+    user.save()
+    context.user = user
+    context.request = CreateRequest(user_id=user.id).perform()
 
 @given(u'a request')
 def step_impl(context):
-    context.request = CreateRequest().perform()
+    user = User()
+    user.save()
+    context.user = user
+    context.request = CreateRequest(user_id=user.id).perform()
 
 @when(u'I visit the start request page')
 def step_impl(context):

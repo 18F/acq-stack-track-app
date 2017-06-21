@@ -2,6 +2,7 @@ from django.test import TestCase, RequestFactory
 
 from intake.models import Request
 from intake.services import CreateRequest, UpdateRequest, UpdateRequestException
+from django.contrib.auth.models import User
 
 # mock login_required before we import the views that have been decorated by it
 # more info: http://alexmarandon.com/articles/python_mock_gotchas/#patching-decorators
@@ -13,13 +14,23 @@ from datetime import datetime
 
 from IPython import embed
 
+from model_mommy import mommy
+from model_mommy.recipe import Recipe, foreign_key
+
+def mock_user():
+    user = mommy.make(User)
+    return user
+
 class CreateRequestTestCase(TestCase):
     def test_perform_with_no_args(self):
-        create_request = CreateRequest()
+        user = User()
+        user.save()
+        create_request = CreateRequest(user_id=user.id)
         self.assertEqual(Request.objects.count(), 0)
         request = create_request.perform()
         self.assertEqual(Request.objects.count(), 1)
         self.assertEqual(type(request.pk), int)
+        self.assertEqual(request.user.id, user.id)
 
 class UpdateRequestTestCase(TestCase):
     def test_perform_with_args(self):
@@ -42,6 +53,7 @@ class IntakeViewsTestCase(TestCase):
 
         request_factory = RequestFactory()
         request = request_factory.post('')
+        request.user = mock_user()
         response = views.create_request(request)
 
         # check that request record was saved
@@ -56,6 +68,7 @@ class IntakeViewsTestCase(TestCase):
     def test_mp_threshold_question_get_request(self):
         request_factory = RequestFactory()
         request = request_factory.get('')
+        request.user = mock_user()
         response = views.mp_threshold_question(request, 12)
         self.assertEqual(response.status_code, 200)
 
@@ -68,6 +81,7 @@ class IntakeViewsTestCase(TestCase):
             'below_mp_threshold': 'true'
         }
         request = request_factory.post('', post_data)
+        request.user = mock_user()
         response = views.mp_threshold_question(request, request_model.pk)
         request_model.refresh_from_db()
         self.assertEqual(request_model.below_mp_threshold, True)
@@ -94,6 +108,7 @@ class IntakeViewsTestCase(TestCase):
             'below_mp_threshold': 'none'
         }
         request = request_factory.post('', post_data)
+        request.user = mock_user()
         response = views.mp_threshold_question(request, request_model.pk)
         request_model.refresh_from_db()
         self.assertEqual(request_model.below_mp_threshold, None)
@@ -102,12 +117,14 @@ class IntakeViewsTestCase(TestCase):
     def test_below_mp_threshold_answer(self):
         request_factory = RequestFactory()
         request = request_factory.get('')
+        request.user = mock_user()
         response = views.below_mp_threshold_answer(request, 12)
         self.assertEqual(response.status_code, 200)
 
     def test_training_question_get_request(self):
         request_factory = RequestFactory()
         request = request_factory.get('')
+        request.user = mock_user()
         response = views.training_question(request, 12)
         self.assertEqual(response.status_code, 200)
 
@@ -120,6 +137,7 @@ class IntakeViewsTestCase(TestCase):
             'is_training': 'true'
         }
         request = request_factory.post('', post_data)
+        request.user = mock_user()
         response = views.training_question(request, request_model.pk)
         request_model.refresh_from_db()
         self.assertEqual(request_model.is_training, True)
@@ -133,6 +151,7 @@ class IntakeViewsTestCase(TestCase):
             'is_training': 'false'
         }
         request = request_factory.post('', post_data)
+        request.user = mock_user()
         response = views.training_question(request, request_model.pk)
         request_model.refresh_from_db()
         self.assertEqual(request_model.is_training, False)
@@ -141,12 +160,14 @@ class IntakeViewsTestCase(TestCase):
     def test_no_training_answer(self):
         request_factory = RequestFactory()
         request = request_factory.get('')
+        request.user = mock_user()
         response = views.no_training_answer(request, 12)
         self.assertEqual(response.status_code, 200)
 
     def test_internal_or_external_get_request(self):
         request_factory = RequestFactory()
         request = request_factory.get('')
+        request.user = mock_user()
         response = views.internal_or_external(request, 12)
         self.assertEqual(response.status_code, 200)
 
@@ -159,6 +180,7 @@ class IntakeViewsTestCase(TestCase):
             'is_internal': 'true'
         }
         request = request_factory.post('', post_data)
+        request.user = mock_user()
         response = views.internal_or_external(request, request_model.pk)
         request_model.refresh_from_db()
         self.assertEqual(request_model.is_internal, True)
@@ -172,6 +194,7 @@ class IntakeViewsTestCase(TestCase):
             'is_internal': 'false'
         }
         request = request_factory.post('', post_data)
+        request.user = mock_user()
         response = views.internal_or_external(request, request_model.pk)
         request_model.refresh_from_db()
         self.assertEqual(request_model.is_internal, False)
@@ -180,12 +203,14 @@ class IntakeViewsTestCase(TestCase):
     def test_no_external(self):
         request_factory = RequestFactory()
         request = request_factory.get('')
+        request.user = mock_user()
         response = views.no_external(request, 12)
         self.assertEqual(response.status_code, 200)
 
     def test_approval_get_request(self):
         request_factory = RequestFactory()
         request = request_factory.get('')
+        request.user = mock_user()
         response = views.approval(request, 12)
         self.assertEqual(response.status_code, 200)
 
@@ -198,6 +223,7 @@ class IntakeViewsTestCase(TestCase):
             'client_has_approval': 'false'
         }
         request = request_factory.post('', post_data)
+        request.user = mock_user()
         response = views.approval(request, request_model.pk)
         request_model.refresh_from_db()
         self.assertEqual(request_model.client_has_approval, False)
@@ -211,6 +237,7 @@ class IntakeViewsTestCase(TestCase):
             'client_has_approval': 'true'
         }
         request = request_factory.post('', post_data)
+        request.user = mock_user()
         response = views.approval(request, request_model.pk)
         request_model.refresh_from_db()
         self.assertEqual(request_model.client_has_approval, True)
@@ -219,6 +246,7 @@ class IntakeViewsTestCase(TestCase):
     def test_contact_get_request(self):
         request_factory = RequestFactory()
         request = request_factory.get('')
+        request.user = mock_user()
         response = views.contact(request, 12)
         self.assertEqual(response.status_code, 200)
 
@@ -230,6 +258,7 @@ class IntakeViewsTestCase(TestCase):
             'client_contact': '@adelevie on slack'
         }
         request = request_factory.post('', post_data)
+        request.user = mock_user()
         response = views.contact(request, request_model.pk)
         request_model.refresh_from_db()
         self.assertEqual(request_model.client_contact, '@adelevie on slack')
@@ -243,6 +272,7 @@ class IntakeViewsTestCase(TestCase):
             'client_contact': ''
         }
         request = request_factory.post('', post_data)
+        request.user = mock_user()
         response = views.contact(request, request_model.pk)
         request_model.refresh_from_db()
         self.assertEqual(request_model.client_contact, '')
@@ -251,12 +281,14 @@ class IntakeViewsTestCase(TestCase):
     def test_no_approval_get_request(self):
         request_factory = RequestFactory()
         request = request_factory.get('')
+        request.user = mock_user()
         response = views.no_approval(request, 12)
         self.assertEqual(response.status_code, 200)
 
     def test_urgency_get_request(self):
         request_factory = RequestFactory()
         request = request_factory.get('')
+        request.user = mock_user()
         response = views.urgency(request, 12)
         self.assertEqual(response.status_code, 200)
 
@@ -266,6 +298,7 @@ class IntakeViewsTestCase(TestCase):
             'urgency': 'true'
         }
         request = request_factory.post('', post_data)
+        request.user = mock_user()
         response = views.urgency(request, 12)
         self.assertEqual(response.status_code, 302)
 
@@ -274,12 +307,14 @@ class IntakeViewsTestCase(TestCase):
             'urgency': 'false'
         }
         request = request_factory.post('', post_data)
+        request.user = mock_user()
         response = views.urgency(request, 12)
         self.assertEqual(response.status_code, 302)
 
     def test_urgency_description_get_request(self):
         request_factory = RequestFactory()
         request = request_factory.get('')
+        request.user = mock_user()
         response = views.urgency_description(request, 12)
         self.assertEqual(response.status_code, 200)
 
@@ -291,6 +326,7 @@ class IntakeViewsTestCase(TestCase):
             'urgency': 'this is very urgent'
         }
         request = request_factory.post('', post_data)
+        request.user = mock_user()
         response = views.urgency_description(request, request_model.pk)
         request_model.refresh_from_db()
         self.assertEqual(request_model.urgency, 'this is very urgent')
@@ -299,6 +335,7 @@ class IntakeViewsTestCase(TestCase):
     def test_description_get_request(self):
         request_factory = RequestFactory()
         request = request_factory.get('')
+        request.user = mock_user()
         response = views.description(request, 12)
         self.assertEqual(response.status_code, 200)
 
@@ -310,6 +347,7 @@ class IntakeViewsTestCase(TestCase):
             'description': 'I want to buy some widgets'
         }
         request = request_factory.post('', post_data)
+        request.user = mock_user()
         response = views.description(request, request_model.pk)
         request_model.refresh_from_db()
         self.assertEqual(request_model.description, 'I want to buy some widgets')
@@ -318,6 +356,7 @@ class IntakeViewsTestCase(TestCase):
     def test_submit_request_get_request(self):
         request_factory = RequestFactory()
         request = request_factory.get('')
+        request.user = mock_user()
         response = views.submit_request(request, 12)
         self.assertEqual(response.status_code, 200)
 
@@ -329,6 +368,7 @@ class IntakeViewsTestCase(TestCase):
             'submit': 'true'
         }
         request = request_factory.post('', post_data)
+        request.user = mock_user()
         response = views.submit_request(request, request_model.pk)
         request_model.refresh_from_db()
         self.assertEqual(request_model.submitted_at.__class__, datetime)
